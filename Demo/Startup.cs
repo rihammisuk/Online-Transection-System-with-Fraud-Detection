@@ -1,7 +1,9 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Demo.Startup))]
+[assembly: OwinStartup(typeof(Demo.Startup))]
+
+
 namespace Demo
 {
     public partial class Startup

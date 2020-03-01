@@ -1,0 +1,113 @@
+﻿@model Demo.Models.UsersAccount
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>UsersAccount</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Transection_Money)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Transection_Money)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransectionType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransectionType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.F_P_AccNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.F_P_AccNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsApproved_old)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsApproved_old)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsApproved_new)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsApproved_new)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFraud_old)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFraud_old)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsFraud_new)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsFraud_new)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreditRatingForOne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreditRatingForOne)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AccountTypeForOne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountTypeForOne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserIPAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserIPAddress)
+        </dd>
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

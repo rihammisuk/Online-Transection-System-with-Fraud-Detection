@@ -8,11 +8,13 @@ namespace Demo.Controllers
 {
     public class HomeController : Controller
     {
+
         public ActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles ="Assistant")]
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
@@ -20,6 +22,7 @@ namespace Demo.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Student")]
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

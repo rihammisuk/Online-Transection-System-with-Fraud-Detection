@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Demo.Models;
+using System.Collections.Generic;
 
 namespace Demo.Controllers
 {
@@ -18,14 +19,34 @@ namespace Demo.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        //Add Role to User
+        private ApplicationRoleManager _roleManager;
+
+        private ApplicationDbContext db = new ApplicationDbContext();
+
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
+        }
+
+        //Add Role to User
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
         }
 
         public ApplicationSignInManager SignInManager
@@ -75,7 +96,7 @@ namespace Demo.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -139,6 +160,14 @@ namespace Demo.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+
+            //Add User to Role
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles) {
+                list.Add(new SelectListItem() { Value = role.Name, Text =  role.Name});
+                ViewBag.Roles = list;
+
+            }
             return View();
         }
 
@@ -149,12 +178,32 @@ namespace Demo.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            int accNoMain = 1;
+            var accNo = db.Users.OrderByDescending(s => s.AccountID).FirstOrDefault().AccountID;
+            if (accNo != null)
+            {
+                string[] arrayStock = accNo.Split('_');
+                accNoMain = int.Parse(arrayStock[1]);
+                accNoMain++;
+            }
+
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { 
+                    UserName = model.UserName,
+                    Email = model.Email,
+                    FullName= model.FullName,
+                    AccountID = "SAcc_" + accNoMain,
+                    AccountType = model.AccountType,
+                    IsFraud =  model.IsFraud,
+                    Acc_Create_Date = DateTime.Now.ToString("MM/dd/yyyy"),
+                    Balance =  model.Balance,
+                    Phone_No =  model.Phone_No,
+                    Credit_Rating =  model.Credit_Rating };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    result = await UserManager.AddToRoleAsync(user.Id, model.RoleName);
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -166,6 +215,15 @@ namespace Demo.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
+            }
+
+            //Add User to Role
+            List<SelectListItem> list = new List<SelectListItem>();
+            foreach (var role in RoleManager.Roles)
+            {
+                list.Add(new SelectListItem() { Value = role.Name, Text = role.Name });
+                ViewBag.Roles = list;
+
             }
 
             // If we got this far, something failed, redisplay form
@@ -367,7 +425,18 @@ namespace Demo.Controllers
                 {
                     return View("ExternalLoginFailure");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { 
+                    UserName = model.UserName, 
+                    Email = model.Email, 
+                    FullName= model.FullName,
+                    AccountID = model.AccountID,
+                    AccountType = model.AccountType,
+                    IsFraud = model.IsFraud,
+                    Acc_Create_Date = model.Acc_Create_Date,
+                    Balance = model.Balance,
+                    Phone_No = model.Phone_No,
+                    Credit_Rating = model.Credit_Rating
+                };
                 var result = await UserManager.CreateAsync(user);
                 if (result.Succeeded)
                 {

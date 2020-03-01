@@ -1,0 +1,94 @@
+﻿@model IEnumerable<Demo.Models.UsersAccount>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transection_Money)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TransectionType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.F_P_AccNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsApproved_old)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsApproved_new)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsFraud_old)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IsFraud_new)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountTypeForOne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreditRatingForOne)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserIPAddress)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserID)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Transection_Money)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TransectionType)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.F_P_AccNo)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.IsApproved_old)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.IsApproved_new)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.IsFraud_old)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.IsFraud_new)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.AccountTypeForOne)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.CreditRatingForOne)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserIPAddress)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+    </td>
+</tr>
+}
+
+</table>
